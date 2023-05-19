@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 
 const app = express();
@@ -55,6 +55,15 @@ async function run() {
           $or: [{ productName: { $regex: name, $options: "i" } }],
         })
         .toArray();
+      res.send(result);
+    });
+
+    //   Get Single Data by Id
+    app.get("/singleToy/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+
+      const result = await toyCollection.find(filter).toArray();
       res.send(result);
     });
 
