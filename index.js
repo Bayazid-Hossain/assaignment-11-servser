@@ -29,6 +29,20 @@ async function run() {
       .db("toyMarketplaceDB")
       .collection("toyProducts");
 
+    //   Getting data from server
+    app.get("/allToys", async (req, res) => {
+      const result = await toyCollection.find().toArray();
+      res.send(result);
+    });
+
+    //   Adding data to server
+    app.post("/addToys", async (req, res) => {
+      const formData = req.body;
+      console.log(formData);
+
+      const result = await toyCollection.insertOne(formData);
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
@@ -41,6 +55,7 @@ async function run() {
 }
 run().catch(console.dir);
 
+// Initial setup
 app.get("/", (req, res) => {
   res.send("Toy marketplace server is running successfully");
 });
