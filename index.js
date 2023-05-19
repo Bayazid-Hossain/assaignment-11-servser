@@ -31,7 +31,8 @@ async function run() {
 
     //   Getting data from server
     app.get("/allToys", async (req, res) => {
-      const result = await toyCollection.find().toArray();
+      const limit = parseInt(req.query.limit) || 20;
+      const result = await toyCollection.find().limit(limit).toArray();
       res.send(result);
     });
 
