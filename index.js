@@ -29,10 +29,20 @@ async function run() {
       .db("toyMarketplaceDB")
       .collection("toyProducts");
 
-    //   Getting data from server
+    //   Getting data from server with 20 limit
     app.get("/allToys", async (req, res) => {
       const limit = parseInt(req.query.limit) || 20;
       const result = await toyCollection.find().limit(limit).toArray();
+      res.send(result);
+    });
+
+    //   Getting category filtered data
+    app.get("/categoryFiltered", async (req, res) => {
+      const category = req.query.category;
+      console.log(category);
+      const result = await toyCollection
+        .find({ subCategory: category })
+        .toArray();
       res.send(result);
     });
 
