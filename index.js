@@ -39,9 +39,21 @@ async function run() {
     //   Getting category filtered data
     app.get("/categoryFiltered", async (req, res) => {
       const category = req.query.category;
-      console.log(category);
+
       const result = await toyCollection
         .find({ subCategory: category })
+        .toArray();
+      res.send(result);
+    });
+
+    //   Search by Toy name
+    app.get("/getToyBySearch", async (req, res) => {
+      const name = req.query.name;
+      console.log(name);
+      const result = await toyCollection
+        .find({
+          $or: [{ productName: { $regex: name, $options: "i" } }],
+        })
         .toArray();
       res.send(result);
     });
