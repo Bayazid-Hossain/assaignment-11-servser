@@ -81,6 +81,24 @@ async function run() {
       const result = await toyCollection.insertOne(formData);
       res.send(result);
     });
+
+    //   Updating toy info
+    app.put("/updateToy/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateData = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const updatedDoc = {
+        $set: {
+          price: updateData.price,
+          availableQuantity: updateData.availableQuantity,
+          detailsDescription: updateData.detailsDescription,
+        },
+      };
+      const result = await toyCollection.updateOne(filter, updatedDoc);
+      console.log(result);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
