@@ -49,7 +49,6 @@ async function run() {
     //   Search by Toy name
     app.get("/getToyBySearch", async (req, res) => {
       const name = req.query.name;
-      console.log(name);
       const result = await toyCollection
         .find({
           $or: [{ productName: { $regex: name, $options: "i" } }],
@@ -67,10 +66,17 @@ async function run() {
       res.send(result);
     });
 
+    //   Get toys data by user
+    app.get("/myToys", async (req, res) => {
+      const user = req.query.user;
+
+      const result = await toyCollection.find({ sellerEmail: user }).toArray();
+      res.send(result);
+    });
+
     //   Adding data to server
     app.post("/addToys", async (req, res) => {
       const formData = req.body;
-      console.log(formData);
 
       const result = await toyCollection.insertOne(formData);
       res.send(result);
