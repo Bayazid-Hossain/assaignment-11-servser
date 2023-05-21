@@ -71,6 +71,22 @@ async function run() {
       const user = req.query.user;
 
       const result = await toyCollection.find({ sellerEmail: user }).toArray();
+
+      res.send(result);
+    });
+
+    //   Get sort data
+
+    app.get("/sortBy", async (req, res) => {
+      const user = req.query.user;
+      const sort = parseInt(req.query.sort);
+      //   console.log(user, sort);
+
+      const result = await toyCollection
+        .find({ sellerEmail: user })
+        .sort({ price: sort })
+        .toArray();
+      //   console.log(result);
       res.send(result);
     });
 
@@ -95,7 +111,7 @@ async function run() {
         },
       };
       const result = await toyCollection.updateOne(filter, updatedDoc);
-      console.log(result);
+
       res.send(result);
     });
 
@@ -105,7 +121,6 @@ async function run() {
       const filter = { _id: new ObjectId(id) };
       const result = await toyCollection.deleteOne(filter);
 
-      console.log(result);
       res.send(result);
     });
 
