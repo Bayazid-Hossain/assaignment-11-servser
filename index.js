@@ -7,6 +7,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors());
+
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.towmtg1.mongodb.net/?retryWrites=true&w=majority`;
@@ -19,6 +20,14 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
+
+// const client = new MongoClient(
+//   uri,
+//   { useUnifiedTopology: true },
+//   { useNewUrlParser: true },
+//   { connectTimeoutMS: 30000 },
+//   { keepAlive: 1 }
+// );
 
 async function run() {
   try {
